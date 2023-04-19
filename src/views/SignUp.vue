@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="sign-up">
         <form @submit.prevent="submitForm">
             <label>
                 Name:
@@ -25,7 +25,7 @@
             <label>
                 Confirm Password:
                 <input type="text" v-model="form.confirmPassword" />
-                {{ v$.confirmPassword }}
+
                 <div v-if="v$.confirmPassword.$error" class="error">
                     Comfirm password must be equal to password
                 </div>
@@ -103,8 +103,129 @@ export default {
 };
 </script>
 
-<style>
-.error {
-    color: red;
+<style lang="scss">
+.sign-up {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    h1 {
+        margin-bottom: 30px;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 500px;
+        padding: 30px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+
+        label {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 20px;
+
+            input,
+            textarea {
+                width: 100%;
+                margin-top: 5px;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+
+                &:focus {
+                    outline: none;
+                    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            button {
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: #fff;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #0069d9;
+                }
+            }
+        }
+
+        .error {
+            color: red;
+        }
+    }
 }
 </style>
+
+<!-- <style lang="scss">
+.sign-up {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+
+    label {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 1.2rem;
+        font-weight: bold;
+
+        input,
+        textarea {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .error {
+            margin-top: 0.5rem;
+            color: red;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+    }
+
+    button[type='submit'] {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background-color: #388e3c;
+        }
+    }
+}
+</style> -->
