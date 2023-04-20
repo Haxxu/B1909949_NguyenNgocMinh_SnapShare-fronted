@@ -3,10 +3,10 @@
         <!-- <v-divider></v-divider> -->
         <div class="top">
             <div class="about">
-                <div class="heading">About Catchy Music</div>
+                <div class="heading">About SnapShare</div>
                 <div class="text">
-                    Catchy Music is a music website that can give user
-                    interested experience
+                    Snapshare is a website that can give use ability to share
+                    image over internet
                 </div>
             </div>
             <div class="info">
@@ -24,8 +24,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="https://reactjs.org/" class="link">
-                                ReactJS
+                            <a href="https://vuejs.org/" class="link">
+                                VueJS
                             </a>
                         </li>
                         <li>
@@ -62,27 +62,25 @@
             <div class="info">
                 <div class="copyright">
                     &copy;
-                    <span class="highlight">Copyright by Catchy Music</span>
+                    <span class="highlight">Copyright by SnapShare</span>
                 </div>
                 <div class="powered">
                     Powered By <span class="highlight">Nguyen Ngoc Minh</span>
                 </div>
             </div>
-            <div class="link">
+            <div class="links">
                 <a class="link" href="https://github.com/Haxxu">
-                    Github
-                    <!-- <v-btn color="primary" icon>
-                        <v-icon size="30">mdi-github</v-icon>
-                    </v-btn> -->
+                    <q-btn round color="primary" size="15px">
+                        <font-awesome-icon :icon="['fab', 'github']" />
+                    </q-btn>
                 </a>
                 <a
                     class="link"
                     href="https://www.facebook.com/profile.php?id=100014062937836"
                 >
-                    Facebook
-                    <!-- <v-btn color="primary" icon>
-                        <v-icon size="30">mdi-facebook</v-icon>
-                    </v-btn> -->
+                    <q-btn color="primary" round size="15px">
+                        <font-awesome-icon :icon="['fab', 'facebook']" />
+                    </q-btn>
                 </a>
             </div>
         </div>
@@ -102,14 +100,14 @@
         .about {
             margin-right: 15px;
             .heading {
-                font-size: 1.4rem;
+                font-size: 18px;
                 font-weight: 700;
                 color: var(--text-primary);
             }
 
             .text {
                 margin-top: 10px;
-                font-size: 1.6rem;
+                font-size: 20px;
                 color: var(--text-primary);
             }
         }
@@ -123,7 +121,7 @@
                 margin-left: 20px;
 
                 .heading {
-                    font-size: 1.3rem;
+                    font-size: 18px;
                     font-weight: 700;
                 }
             }
@@ -133,18 +131,18 @@
                 margin-left: 20px;
 
                 .heading {
-                    font-size: 1.3rem;
+                    font-size: 18px;
                     font-weight: 700;
                 }
             }
 
             .links {
                 list-style-type: none;
-                padding: 10px;
+                padding: 15px;
                 .link {
                     display: inline-block;
                     text-decoration: none;
-                    font-size: 1rem;
+                    font-size: 14px;
                     font-weight: 600;
                     color: var(--text-primary);
                     padding: 5px 0px;
@@ -160,14 +158,15 @@
     .bottom {
         padding: 20px 0;
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        font-size: 1rem;
+        font-size: 15px;
 
         .info {
             .copyright {
                 padding: 10px 0;
             }
-            .powerd {
+            .powered {
                 padding: 10px 0;
             }
         }
@@ -175,6 +174,12 @@
         .highlight {
             color: var(--primary-color);
             font-weight: 700;
+        }
+
+        .links {
+            .link {
+                margin-left: 4px;
+            }
         }
     }
 }
