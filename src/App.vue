@@ -1,16 +1,8 @@
 <template>
     <div id="app">
-        <nav>
-            <ul>
-                <li><router-link to="/">Home</router-link></li>
-                <li><router-link to="/login">Login</router-link></li>
-                <li><router-link to="/signup">Signup</router-link></li>
-                <li v-if="isLoggedIn">
-                    <button @click="logout">Logout</button>
-                </li>
-            </ul>
-        </nav>
-        <router-view />
+        <component :is="layout">
+            <router-view />
+        </component>
     </div>
 </template>
 
@@ -20,6 +12,7 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 import authService from './services/authService';
+import DefaultLayoutVue from './layouts/DefaultLayout.vue';
 
 export default {
     name: 'App',
@@ -34,9 +27,14 @@ export default {
             router.push({ name: 'Login' });
         };
 
+        const layout = computed(() => {
+            return DefaultLayoutVue;
+        });
+
         return {
             isLoggedIn,
             logout,
+            layout,
         };
     },
 };

@@ -1,41 +1,106 @@
 <template>
-    <div class="sign-up">
-        <form @submit.prevent="submitForm">
-            <label>
-                Name:
-                <input type="text" v-model="form.name" @blur="v$.name.$touch" />
-                <div v-if="v$.name.$error" class="error">
-                    {{ v$.name.$errors[0].$message }}
-                </div>
-            </label>
-            <label>
-                Account:
-                <input type="text" v-model="form.account" />
-                <div v-if="v$.account.$error" class="error">
-                    {{ v$.account.$errors[0].$message }}
-                </div>
-            </label>
-            <label>
-                Password:
-                <input type="text" v-model="form.password" />
-                <div v-if="v$.password.$error" class="error">
-                    {{ v$.password.$errors[0].$message }}
-                </div>
-            </label>
-            <label>
-                Confirm Password:
-                <input type="text" v-model="form.confirmPassword" />
-
-                <div v-if="v$.confirmPassword.$error" class="error">
-                    Comfirm password must be equal to password
-                </div>
-            </label>
-            <label>
-                Description:
-                <textarea v-model="form.description"></textarea>
-            </label>
-            <button type="submit">Submit</button>
-        </form>
+    <div class="container">
+        <h1 class="header">Sign Up</h1>
+        <q-form @submit.prevent="submitForm" class="form-container">
+            <div class="input-container">
+                <q-input
+                    type="text"
+                    v-model="form.name"
+                    filled
+                    label="Name"
+                    clearable
+                    lazy-rules
+                    :rules="[
+                        () => {
+                            if (!v$.name.$error) {
+                                return true;
+                            } else {
+                                return v$.name.$errors[0].$message;
+                            }
+                        },
+                    ]"
+                />
+            </div>
+            <div class="input-container">
+                <q-input
+                    type="text"
+                    v-model="form.account"
+                    filled
+                    label="Account"
+                    clearable
+                    :rules="[
+                        (_) => {
+                            if (!v$.account.$error) return true;
+                            else return v$.account.$errors[0].$message;
+                        },
+                    ]"
+                />
+            </div>
+            <div class="input-container">
+                <q-input
+                    type="password"
+                    v-model="form.password"
+                    filled
+                    label="Password"
+                    clearable
+                    lazy-rules
+                    :rules="[
+                        (_) => {
+                            if (!v$.password.$error) return true;
+                            else return v$.password.$errors[0].$message;
+                        },
+                    ]"
+                />
+            </div>
+            <div class="input-container">
+                <q-input
+                    type="password"
+                    v-model="form.confirmPassword"
+                    filled
+                    label="Confirm password"
+                    clearable
+                    :rules="[
+                        (_) => {
+                            if (!v$.confirmPassword.$error) return true;
+                            else return v$.confirmPassword.$errors[0].$message;
+                        },
+                    ]"
+                />
+            </div>
+            <div class="input-container">
+                <q-input
+                    type="textarea"
+                    v-model="form.description"
+                    filled
+                    label="Description"
+                    clearable
+                />
+            </div>
+            <q-btn
+                type="submit"
+                color="primary"
+                text-color="text-secondary"
+                label="   Sign Up   "
+                :loading="isSubmiting"
+                size="20px"
+                padding="sm"
+            >
+                <template v-slot:loading>
+                    <q-spinner-facebook />
+                </template>
+            </q-btn>
+        </q-form>
+        <div class="login-section">
+            <h4 class="title">Have an account?</h4>
+            <q-btn
+                outline
+                color="secondary"
+                text-color="text-secondary"
+                label="Log in"
+                padding="sm"
+                @click="navigateToLogin"
+            />
+        </div>
     </div>
 </template>
 
@@ -61,6 +126,7 @@ export default {
             confirmPassword: '',
             description: '',
         });
+        const isSubmiting = ref(false);
 
         const passwordValue = ref('');
 
@@ -83,6 +149,7 @@ export default {
         };
 
         const v$ = useVuelidate(rules, form);
+        v$.value.$touch();
 
         const submitForm = async () => {
             if (v$.value.$invalid) {
@@ -90,142 +157,78 @@ export default {
                 return;
             }
 
+            isSubmiting.value = true;
             await authService.signup(store, form);
+            isSubmiting.value = false;
             router.push({ name: 'Home' });
+        };
+
+        const navigateToLogin = () => {
+            router.push({ name: 'Login' });
         };
 
         return {
             form,
             v$,
+            isSubmiting,
+            navigateToLogin,
             submitForm,
         };
     },
 };
 </script>
 
-<style lang="scss">
-.sign-up {
+<style lang="scss" scoped>
+.container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 450px; */
+    width: 450px;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 2px;
+    border: 1px solid var(--secondary-color);
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+        rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+        rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
 
-    h1 {
-        margin-bottom: 30px;
-        font-size: 32px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+
+    .header {
+        margin: 10px 0;
+        font-size: 40px;
+        font-family: 'Open Sans', sna;
         font-weight: bold;
     }
 
-    form {
+    .form-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-width: 500px;
-        padding: 30px;
-        background-color: #f5f5f5;
-        border-radius: 5px;
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+        width: 100%;
 
-        label {
-            display: flex;
-            flex-direction: column;
+        .input-container {
             width: 100%;
-            margin-bottom: 20px;
-
-            input,
-            textarea {
-                width: 100%;
-                margin-top: 5px;
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-
-                &:focus {
-                    outline: none;
-                    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-                }
-            }
-
-            button {
-                width: 100%;
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                background-color: #007bff;
-                color: #fff;
-                font-size: 16px;
-                font-weight: bold;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #0069d9;
-                }
-            }
+            margin: 15px 20px 20px;
         }
 
-        .error {
-            color: red;
+        .action-btn {
+            min-width: 200px;
+            /* padding: 20px; */
+        }
+    }
+
+    .login-section {
+        width: 100%;
+        text-align: center;
+        margin-top: 40px;
+        border-top: solid 1px #000;
+
+        .title {
+            font-size: 16px;
         }
     }
 }
 </style>
-
-<!-- <style lang="scss">
-.sign-up {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 1rem;
-
-    label {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        font-size: 1.2rem;
-        font-weight: bold;
-
-        input,
-        textarea {
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        .error {
-            margin-top: 0.5rem;
-            color: red;
-            font-size: 0.8rem;
-            font-weight: normal;
-        }
-    }
-
-    button[type='submit'] {
-        margin-top: 1rem;
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: none;
-        border-radius: 0.5rem;
-        background-color: #4caf50;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
-
-        &:hover {
-            background-color: #388e3c;
-        }
-    }
-}
-</style> -->
