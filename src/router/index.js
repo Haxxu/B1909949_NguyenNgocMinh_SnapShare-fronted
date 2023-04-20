@@ -4,6 +4,7 @@ import HomeView from '@/views/Home.vue';
 import LoginView from '@/views/Login.vue';
 import SignUpView from '@/views/SignUp.vue';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,8 @@ const router = createRouter({
             component: HomeView,
             meta: {
                 requiresAuth: true,
+                layout: MainLayout,
+                showFooter: true,
             },
         },
         {

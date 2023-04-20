@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="signup-container">
         <h1 class="header">Sign Up</h1>
         <q-form @submit.prevent="submitForm" class="form-container">
             <div class="input-container">
@@ -179,7 +179,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.signup-container {
     display: flex;
     flex-direction: column;
     justify-content: center;

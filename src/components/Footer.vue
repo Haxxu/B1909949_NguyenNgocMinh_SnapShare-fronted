@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-footer">
         <!-- <v-divider></v-divider> -->
         <div class="top">
             <div class="about">
@@ -88,9 +88,11 @@
 </template>
 
 <style lang="scss" scoped>
-.container {
+.container-footer {
     padding: 24px 32px;
     /* margin-top: 70px; */
+    /* display: flex; */
+    /* flex-direction: column; */
 
     .top {
         display: flex;
@@ -102,13 +104,13 @@
             .heading {
                 font-size: 18px;
                 font-weight: 700;
-                color: var(--text-primary);
+                color: $text-primary;
             }
 
             .text {
                 margin-top: 10px;
                 font-size: 20px;
-                color: var(--text-primary);
+                color: $text-primary;
             }
         }
 
@@ -144,11 +146,11 @@
                     text-decoration: none;
                     font-size: 14px;
                     font-weight: 600;
-                    color: var(--text-primary);
+                    color: $text-primary;
                     padding: 5px 0px;
 
                     &:hover {
-                        color: var(--text-secondary);
+                        color: $text-secondary;
                     }
                 }
             }
@@ -172,7 +174,7 @@
         }
 
         .highlight {
-            color: var(--primary-color);
+            color: $primary-color;
             font-weight: 700;
         }
 

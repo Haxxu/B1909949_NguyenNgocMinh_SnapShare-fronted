@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <component :is="layout">
             <router-view />
         </component>
@@ -11,7 +11,6 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-import authService from './services/authService';
 import DefaultLayoutVue from './layouts/DefaultLayout.vue';
 
 export default {
@@ -22,18 +21,12 @@ export default {
 
         const isLoggedIn = computed(() => store.state.auth.isLoggedIn);
 
-        const logout = async () => {
-            await authService.logout(store);
-            router.push({ name: 'Login' });
-        };
-
         const layout = computed(() => {
-            return DefaultLayoutVue;
+            return router.currentRoute.value.meta.layout || DefaultLayoutVue;
         });
 
         return {
             isLoggedIn,
-            logout,
             layout,
         };
     },

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="login-container">
         <h1 class="header">Login</h1>
         <q-form @submit.prevent="login" class="form-container">
             <div class="input-container">
@@ -33,7 +33,7 @@
             <q-btn
                 type="submit"
                 color="primary"
-                text-color="text-secondary"
+                text-color="text-primary"
                 label="   Login   "
                 :loading="isSubmiting"
                 size="20px"
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
