@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { loginUrl, signupUrl } from '@/api/urls';
+import { loginUrl, signupUrl, activeAccountUrl } from '@/api/urls';
 import { toast } from 'vue3-toastify';
 
 class AuthService {
@@ -28,12 +28,12 @@ class AuthService {
 
     async signup(store, { name, account, password, description }) {
         try {
-            console.log({
-                name,
-                account,
-                password,
-                description,
-            });
+            // console.log({
+            //     name,
+            //     account,
+            //     password,
+            //     description,
+            // });
             const res = await axios.post(signupUrl(), {
                 account,
                 password,
@@ -60,6 +60,27 @@ class AuthService {
     async logout(store) {
         store.dispatch('logout');
         toast.success('Logout success.');
+    }
+
+    async activeAccount(token) {
+        try {
+            const res = await axios.post(activeAccountUrl(), {
+                active_token: token,
+            });
+            if (res.status === 200) {
+                // toast.success(res.data.message);
+                return true;
+            }
+
+            return false;
+        } catch (error) {
+            if (error.response && error.response.status >= 400) {
+                // toast.error(error.response.data.message);
+            } else {
+                console.log(error);
+            }
+            return false;
+        }
     }
 }
 

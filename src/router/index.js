@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import HomeView from '@/views/Home.vue';
 import LoginView from '@/views/Login.vue';
 import SignUpView from '@/views/SignUp.vue';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import MainLayout from '@/layouts/MainLayout.vue';
+import NotFound from '@/views/NotFound.vue';
+import ActiveAccount from '@/views/ActiveAccount.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +38,14 @@ const router = createRouter({
                 requiresQuest: true,
                 layout: DefaultLayout,
             },
+        },
+        {
+            path: '/active/:token',
+            component: ActiveAccount,
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            component: NotFound,
         },
     ],
 });

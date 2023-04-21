@@ -33,7 +33,7 @@
             <q-btn
                 type="submit"
                 color="primary"
-                text-color="text-primary"
+                text-color="white"
                 label="   Login   "
                 :loading="isSubmiting"
                 size="20px"

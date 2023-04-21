@@ -79,7 +79,7 @@
             <q-btn
                 type="submit"
                 color="primary"
-                text-color="text-secondary"
+                text-color="white"
                 label="   Sign Up   "
                 :loading="isSubmiting"
                 size="20px"
