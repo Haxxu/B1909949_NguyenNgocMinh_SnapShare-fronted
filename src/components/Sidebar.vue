@@ -16,7 +16,7 @@
                     <span>Home</span>
                 </router-link>
                 <router-link
-                    :to="{ name: 'Login' }"
+                    :to="{ name: 'Search' }"
                     active-class="active"
                     class="link"
                 >
@@ -24,12 +24,12 @@
                     <span>Search</span>
                 </router-link>
                 <router-link
-                    :to="{ name: 'Login' }"
+                    :to="{ name: 'CreatePost' }"
                     active-class="active"
                     class="link"
                 >
                     <font-awesome-icon :icon="['fas', 'square-plus']" />
-                    <span>Create</span>
+                    <span>Create Post</span>
                 </router-link>
                 <router-link
                     :to="{ name: 'Login' }"
@@ -84,7 +84,7 @@ export default {
         width: 100%;
         display: flex;
         align-items: center;
-        font-size: 20px;
+        font-size: 30px;
         color: $text-primary;
         font-family: 'Belleza', 'Roboto', sans-serif;
         margin-bottom: 10px;
@@ -107,7 +107,7 @@ export default {
     .link {
         display: flex;
         align-items: center;
-        font-size: 18px;
+        font-size: 16px;
         padding: 8px 5px;
         color: $text-primary;
         text-decoration: none;
@@ -127,7 +127,7 @@ export default {
 
         span {
             margin-left: 10px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
 
             max-width: 250px;

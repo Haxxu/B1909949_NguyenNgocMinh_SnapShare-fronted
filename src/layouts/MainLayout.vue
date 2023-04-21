@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import Footer from '@/components/Footer.vue';
 import Sidebar from '@/components/Sidebar.vue';
 

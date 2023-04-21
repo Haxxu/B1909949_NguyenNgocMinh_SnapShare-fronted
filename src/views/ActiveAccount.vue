@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>Active Account</div>
-        <div>{{ token }}</div>
+        <!-- <div>{{ token }}</div> -->
     </div>
 </template>
 

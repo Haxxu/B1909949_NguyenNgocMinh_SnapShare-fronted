@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import MainLayout from '@/layouts/MainLayout.vue';
-import HomeView from '@/views/Home.vue';
 import LoginView from '@/views/Login.vue';
 import SignUpView from '@/views/SignUp.vue';
 import NotFound from '@/views/NotFound.vue';
 import ActiveAccount from '@/views/ActiveAccount.vue';
+import HomeView from '@/views/Home.vue';
+import SearchView from '@/views/Search.vue';
+import CreatePost from '@/views/CreatePost.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +21,26 @@ const router = createRouter({
                 requiresAuth: true,
                 layout: MainLayout,
                 showFooter: true,
+            },
+        },
+        {
+            path: '/search',
+            name: 'Search',
+            component: SearchView,
+            meta: {
+                requiresAuth: true,
+                layout: MainLayout,
+                showFooter: true,
+            },
+        },
+        {
+            path: '/create-post',
+            name: 'CreatePost',
+            component: CreatePost,
+            meta: {
+                requiresAuth: true,
+                layout: MainLayout,
+                // showFooter: true,
             },
         },
         {

@@ -4,6 +4,8 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import sass from 'sass';
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
+import autoprefixer from 'autoprefixer';
+import tailwindcss from 'tailwindcss';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -36,6 +38,9 @@ export default defineConfig({
         // postcss: {
         //     plugins: [require('autoprefixer')],
         // },
+        postcss: {
+            plugins: [tailwindcss, autoprefixer],
+        },
         // include: [/node_modules/],
     },
 });
