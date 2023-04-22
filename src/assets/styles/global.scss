@@ -24,3 +24,26 @@ $text-secondary: #00000080;
 html {
     font-family: 'Roboto', 'Open Sans', sans-serif;
 }
+
+.custom-scrollbar {
+    overflow: scroll;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar-track {
+        border: 1px solid var(--text-color);
+        background-color: var(--background-color);
+    }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        background-color: var(--background-color);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--text-secondary);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: var(--text-primary);
+    }
+}

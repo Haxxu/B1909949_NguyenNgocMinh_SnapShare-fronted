@@ -32,7 +32,13 @@
                     <span>Create Post</span>
                 </router-link>
                 <router-link
-                    :to="{ name: 'Login' }"
+                    :to="{
+                        name: 'User',
+                        params: {
+                            id: user?._id || 'not-fun',
+                            // id: userId || 'ksd',
+                        },
+                    }"
                     active-class="active"
                     class="link"
                 >
@@ -52,7 +58,9 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import { computed, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useStore } from 'vuex';
+
 import authService from '@/services/authService.js';
 
 export default {
@@ -61,12 +69,24 @@ export default {
         const router = useRouter();
         const store = useStore();
 
+        onMounted(async () => {
+            await authService.fetchUser(store);
+        });
+
         const logout = async () => {
             await authService.logout(store);
             router.push({ name: 'Login' });
         };
 
-        return { logout };
+        const user = computed(() => store.state.auth.user);
+
+        const userId = computed(() =>
+            store.state.auth.user?._id ? store.state.auth.user._id : ''
+        );
+
+        watchEffect(userId);
+
+        return { logout, userId, user };
     },
 };
 </script>

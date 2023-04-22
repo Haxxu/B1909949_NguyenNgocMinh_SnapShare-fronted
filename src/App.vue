@@ -7,11 +7,13 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 import DefaultLayoutVue from './layouts/DefaultLayout.vue';
+import authService from './services/authService';
+import postService from './services/postService';
 
 export default {
     name: 'App',
@@ -23,6 +25,10 @@ export default {
 
         const layout = computed(() => {
             return router.currentRoute.value.meta.layout || DefaultLayoutVue;
+        });
+
+        onBeforeMount(async () => {
+            await authService.fetchUser(store);
         });
 
         return {

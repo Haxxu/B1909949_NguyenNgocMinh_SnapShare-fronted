@@ -26,7 +26,7 @@
                 class="w-full md:flex h-[calc(100%-55px)] rounded-xl overflow-auto"
             >
                 <div
-                    class="flex items-center w-full h-full overflow-hidden bg-gray-100"
+                    class="relative flex items-center w-full h-full overflow-hidden bg-gray-100"
                 >
                     <div
                         v-if="!fileDisplay"
@@ -62,6 +62,18 @@
                         class="min-w-[400px] p-4 mx-auto"
                         :src="fileDisplay"
                     />
+                    <div
+                        v-if="fileDisplay && isValidFile === true"
+                        class="p-2 absolute-top-right"
+                    >
+                        <q-btn
+                            round
+                            color="secondary"
+                            icon="close"
+                            size="10px"
+                            @click="clearImage"
+                        />
+                    </div>
                 </div>
 
                 <div id="TextAreaSection" class="max-w-[720px] w-full relative">
@@ -69,10 +81,10 @@
                         <div class="flex items-center">
                             <img
                                 class="rounded-full w-[38px] h-[38px]"
-                                :src="user.image"
+                                :src="user?.image"
                             />
                             <div class="ml-4 font-extrabold text-[15px]">
-                                {{ user.name }}
+                                {{ user?.name }}
                             </div>
                         </div>
                     </div>
@@ -119,7 +131,15 @@
 </template>
 
 <script>
-import { reactive, ref, watch, watchEffect } from 'vue';
+import {
+    computed,
+    onBeforeMount,
+    onMounted,
+    reactive,
+    ref,
+    watch,
+    watchEffect,
+} from 'vue';
 import ArrowLeft from 'vue-material-design-icons/ArrowLeft.vue';
 import MapMarkerOutline from 'vue-material-design-icons/MapMarkerOutline.vue';
 import ChevronDown from 'vue-material-design-icons/ChevronDown.vue';
@@ -127,6 +147,8 @@ import { toast } from 'vue3-toastify';
 
 import storageService from '@/services/storageService';
 import postService from '../services/postService';
+import useUser from '../composables/useUser';
+import { useStore } from 'vuex';
 
 export default {
     name: 'CreatePost',
@@ -136,15 +158,15 @@ export default {
         ChevronDown,
     },
     setup() {
+        const store = useStore();
+
         const form = reactive({
             description: '',
             image: '',
             title: '',
         });
-
         let file = ref(null);
         let isLoading = ref(false);
-
         let isValidFile = ref(null);
         let fileDisplay = ref('');
         let error = ref({
@@ -154,17 +176,17 @@ export default {
             file: '',
         });
 
-        const user = reactive({
-            image: 'https://d1hjkbq40fs2x4.cloudfront.net/2016-01-31/files/1045.jpg',
-            name: 'Ngoc Minh',
-        });
-
-        watchEffect(isLoading);
+        const user = computed(() => store.state.auth.user);
 
         const clearForm = () => {
             form.description = '';
             form.title = '';
             form.image = '';
+            file.value = null;
+            fileDisplay.value = '';
+        };
+
+        const clearImage = () => {
             file.value = null;
             fileDisplay.value = '';
         };
@@ -175,7 +197,7 @@ export default {
                 file.value.name.lastIndexOf('.') + 1
             );
 
-            console.log(extention);
+            // console.log(extention);
 
             if (
                 extention == 'png' ||
@@ -218,6 +240,14 @@ export default {
             clearForm();
         };
 
+        watchEffect(isLoading);
+
+        const { fetchUser } = useUser();
+
+        // onMounted(() => {
+        //     fetchUser();
+        // });
+
         return {
             isValidFile,
             fileDisplay,
@@ -226,6 +256,7 @@ export default {
             file,
             error,
             user,
+            clearImage,
             clearForm,
             getUploadedImage,
             createPost,

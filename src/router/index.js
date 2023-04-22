@@ -9,6 +9,7 @@ import ActiveAccount from '@/views/ActiveAccount.vue';
 import HomeView from '@/views/Home.vue';
 import SearchView from '@/views/Search.vue';
 import CreatePost from '@/views/CreatePost.vue';
+import User from '@/views/User.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,17 @@ const router = createRouter({
                 requiresAuth: true,
                 layout: MainLayout,
                 // showFooter: true,
+            },
+        },
+        {
+            path: '/user/:id',
+            name: 'User',
+            component: User,
+            props: true,
+            meta: {
+                requiresAuth: true,
+                layout: MainLayout,
+                showFooter: true,
             },
         },
         {

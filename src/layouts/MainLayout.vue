@@ -13,11 +13,13 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Footer from '@/components/Footer.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import authService from '../services/authService';
+// import { useStore } from 'vuex';
 
 export default {
     components: {
@@ -26,6 +28,7 @@ export default {
     },
     setup() {
         const router = useRouter();
+        // const store = useStore();
 
         const showFooter = computed(() => {
             return router.currentRoute.value.meta.showFooter || false;
