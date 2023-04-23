@@ -3,10 +3,12 @@ import { toast } from 'vue3-toastify';
 import axiosInstance from '../api/axiosInstance';
 import {
     createPostUrl,
+    updatePostByIdUrl,
     getPostsByTagsUrl,
     getSavedPostsUrl,
     handleLikePostUrl,
     handleSavePostUrl,
+    deletePostByIdUrl,
 } from '@/api/urls';
 
 class PostService {
@@ -33,20 +35,54 @@ class PostService {
         }
     }
 
+    async updatePost(store, postId, title, description, image) {
+        try {
+            const res = await axiosInstance.patch(updatePostByIdUrl(postId), {
+                title,
+                description,
+                image,
+            });
+            if (res.status === 200) {
+                store.dispatch('updatePost', res.data.data);
+                toast.success(res.data.message);
+                return true;
+            }
+            toast.error(res.data.message);
+            return false;
+        } catch (error) {
+            if (error.response && error.response.status >= 400) {
+                toast.error(error.response.data.message);
+            } else {
+                console.log(error);
+            }
+            return false;
+        }
+    }
+
     async fetchHomePosts(store) {
         try {
             const res = await axiosInstance.get(getPostsByTagsUrl(), {
                 params: {
                     limit: 25,
-                    tags: ['random', 'following'],
+                    tags: ['random', 'following', 'myPosts'],
                 },
             });
             if (res.status < 400) {
-                const posts = mergeAndShuffle(
+                let posts = mergeArrays(
                     res.data.data.following,
-                    res.data.data.random
+                    res.data.data.random,
+                    res.data.data.myPosts
                 );
-                store.dispatch('fetchHomePosts', posts);
+
+                const uniquePosts = posts.filter(
+                    (post, index, self) =>
+                        index === self.findIndex((p) => p._id === post._id)
+                );
+
+                uniquePosts.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+                store.dispatch('fetchHomePosts', uniquePosts);
             }
         } catch (error) {
             if (error.response && error.response.status >= 400) {
@@ -144,6 +180,22 @@ class PostService {
             }
         }
     }
+
+    async deletePostById(store, postId) {
+        try {
+            const res = await axiosInstance.delete(deletePostByIdUrl(postId));
+            if (res.status < 400) {
+                store.dispatch('deletePost', postId);
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            if (error.response && error.response.status >= 400) {
+                toast.error(error.response.data.message);
+            } else {
+                console.log(error);
+            }
+        }
+    }
 }
 
 function mergeAndShuffle(arr1, arr2) {
@@ -153,6 +205,12 @@ function mergeAndShuffle(arr1, arr2) {
         [merged[i], merged[j]] = [merged[j], merged[i]]; // Swap the current element with the randomly selected element
     }
     return merged;
+}
+
+function mergeArrays(...arrays) {
+    return arrays.reduce((mergedArray, currentArray) => {
+        return mergedArray.concat(currentArray);
+    }, []);
 }
 
 export default new PostService();

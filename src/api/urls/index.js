@@ -11,7 +11,11 @@ export const getUserInfoUrl = () => `${apiUrl}/me/info`;
 // POST
 export const createPostUrl = () => `${apiUrl}/posts`;
 
+export const updatePostByIdUrl = (postId) => `${apiUrl}/posts/${postId}`;
+
 export const getPostsByTagsUrl = () => `${apiUrl}/posts`;
+
+export const deletePostByIdUrl = (postId) => `${apiUrl}/posts/${postId}`;
 
 export const getSavedPostsUrl = () => `${apiUrl}/me/saved-posts`;
 
@@ -22,3 +26,10 @@ export const handleSavePostUrl = () => `${apiUrl}/me/saved-posts`;
 // COMMENT
 export const getCommentsByPostIdUrl = (postId) =>
     `${apiUrl}/posts/${postId}/comments`;
+
+export const handleLikeCommentUrl = () => `${apiUrl}/me/liked-comments`;
+
+export const createCommentUrl = () => `${apiUrl}/comments`;
+
+export const deleteCommentByIdUrl = (commentId) =>
+    `${apiUrl}/comments/${commentId}`;

@@ -44,7 +44,7 @@
         <div class="flex justify-between">
             <div class="flex-1">
                 <like-button :post="post" type="post"></like-button>
-                <button class="-mt-[14px] ml-3">
+                <button class="-mt-[14px] ml-3" @click="openPostOverlay">
                     <CommentOutline class="pl-3 pt-[10px]" :size="30" />
                 </button>
             </div>
@@ -60,27 +60,21 @@
             <span class="font-extrabold text-black">{{
                 post.owner.account
             }}</span>
-            {{ post.description }}
+            {{ post.title }}
         </div>
-        <button @click="openOverlay" class="py-1 font-extrabold text-gray-500">
-            View all {{ commentLength }} comments
+        <div class="mt-1">
+            <span>{{ post.description }}</span>
+        </div>
+
+        <button
+            @click="openPostOverlay"
+            class="py-1 font-extrabold text-gray-500"
+        >
+            View all {{ comments.length }} comments
         </button>
 
         <div class="mt-4 border-t border-gray-400"></div>
     </div>
-
-    <show-post-overlay
-        v-if="isOpenOverlay"
-        :post="post"
-        @closeOverlay="closeOverlay"
-    ></show-post-overlay>
-
-    <show-post-options-overlay
-        v-if="isOpenPostOptionsOverlay"
-        :post="post"
-        @deletePost="handleDeletePost"
-        @closeOverlay="closePostOptionsOverlay"
-    ></show-post-options-overlay>
 </template>
 
 <script>
@@ -114,17 +108,24 @@ export default {
     },
     setup(props) {
         const store = useStore();
-        const comments = ref([]);
-        const isOpenOverlay = ref(false);
+        const comments = computed(() => {
+            const c = store.state.post.posts.find(
+                (item) => item._id === props.post._id
+            );
+            return c.comments || [];
+        });
         const isOpenPostOptionsOverlay = ref(false);
         const commentLength = computed(() => comments.value.length);
 
         watchEffect(() => comments);
 
         onMounted(async () => {
-            comments.value = await commentService.getCommentByPostId(
-                props.post?._id
-            );
+            let data = await commentService.getCommentByPostId(props.post?._id);
+
+            store.dispatch('addCommentsToPost', {
+                postId: props.post._id,
+                comments: data,
+            });
         });
 
         const user = computed(() => store.state.auth.user);
@@ -133,25 +134,14 @@ export default {
             await postService.likePost(store, props.post);
         };
 
-        const closeOverlay = () => {
-            isOpenOverlay.value = false;
-        };
-
-        const openOverlay = () => {
-            isOpenOverlay.value = true;
-        };
-
-        const closePostOptionsOverlay = () => {
-            isOpenPostOptionsOverlay.value = false;
+        const openPostOverlay = () => {
+            store.dispatch('setCurrentPost', props.post);
+            store.dispatch('setShowCurrentPostOverlay', true);
         };
 
         const openPostOptionsOverlay = () => {
-            isOpenPostOptionsOverlay.value = true;
-        };
-
-        const handleDeletePost = async () => {
-            alert('Delete post');
-            isOpenPostOptionsOverlay.value = false;
+            store.dispatch('setCurrentPost', props.post);
+            store.dispatch('setShowCurrentPostOptionsOverlay', true);
         };
 
         return {
@@ -159,14 +149,10 @@ export default {
             getTimeGap,
             comments,
             commentLength,
-            isOpenOverlay,
             isOpenPostOptionsOverlay,
-            closeOverlay,
-            openOverlay,
-            closePostOptionsOverlay,
+            openPostOverlay,
             openPostOptionsOverlay,
             likePost,
-            handleDeletePost,
         };
     },
 };

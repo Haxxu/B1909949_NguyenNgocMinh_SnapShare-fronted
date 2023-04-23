@@ -1,20 +1,23 @@
 <template>
     <div
-        class="fixed flex items-center z-50 top-0 left-0 w-full h-screen bg-[#000000] bg-opacity-60 p-3"
+        class="fixed flex items-center z-40 top-0 left-0 w-full h-screen bg-[#000000] bg-opacity-60 p-3"
     >
         <div
-            class="max-w-sm w-full mx-auto mt-10 bg-white rounded-xl text-center"
+            class="w-full max-w-sm mx-auto mt-10 text-center bg-white rounded-xl"
         >
             <button
-                @click="$emit('deletePost')"
-                class="font-extrabold w-full text-red-600 p-3 text-lg border-b border-b-gray-300 cursor-pointer"
+                @click="deletePost"
+                class="w-full p-3 text-lg font-extrabold text-red-600 border-b cursor-pointer border-b-gray-300"
             >
-                Delete
+                Delete Post
             </button>
             <div
-                class="p-3 text-lg cursor-pointer"
-                @click="$emit('closeOverlay')"
+                class="p-3 text-lg border-b cursor-pointer border-b-gray-300"
+                @click="openEditPostOverlay"
             >
+                Edit Post
+            </div>
+            <div class="p-3 text-lg cursor-pointer" @click="closeOverlay">
                 Cancel
             </div>
         </div>
@@ -22,6 +25,8 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import postService from '../services/postService';
 export default {
     name: 'ShowPostOptionsOverlay',
     props: {
@@ -29,6 +34,23 @@ export default {
             type: Object,
         },
     },
-    setup() {},
+    setup(props) {
+        const store = useStore();
+
+        const closeOverlay = () => {
+            store.dispatch('setShowCurrentPostOptionsOverlay', false);
+        };
+
+        const openEditPostOverlay = () => {
+            store.dispatch('setShowEditCurrentPostOverlay', true);
+            store.dispatch('setShowCurrentPostOptionsOverlay', false);
+        };
+
+        const deletePost = async () => {
+            await postService.deletePostById(store, props.post._id);
+        };
+
+        return { closeOverlay, deletePost, openEditPostOverlay };
+    },
 };
 </script>

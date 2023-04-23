@@ -10,6 +10,7 @@
                 <button
                     @click="createPost"
                     class="text-lg font-extrabold text-blue-500 hover:text-gray-900"
+                    :disabled="isLoading"
                 >
                     Post
                 </button>
@@ -84,7 +85,7 @@
                                 :src="user?.image"
                             />
                             <div class="ml-4 font-extrabold text-[15px]">
-                                {{ user?.name }}
+                                {{ user?.account }}
                             </div>
                         </div>
                     </div>
