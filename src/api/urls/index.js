@@ -33,3 +33,14 @@ export const createCommentUrl = () => `${apiUrl}/comments`;
 
 export const deleteCommentByIdUrl = (commentId) =>
     `${apiUrl}/comments/${commentId}`;
+
+// USER
+export const getFollowingByUserIdUrl = (userId) =>
+    `${apiUrl}/users/${userId}/following`;
+
+export const getFollowersByUserIdUrl = (userId) =>
+    `${apiUrl}/users/${userId}/followers`;
+
+export const getUserByIdUrl = (userId) => `${apiUrl}/users/${userId}`;
+
+export const updateUserByIdUrl = (userId) => `${apiUrl}/users/${userId}`;

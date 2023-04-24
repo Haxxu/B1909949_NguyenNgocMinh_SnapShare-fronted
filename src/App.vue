@@ -25,6 +25,18 @@
             :comment="currentComment"
         >
         </show-comment-options-overlay>
+
+        <show-user-list-overlay
+            v-if="isShowUserListOverlay"
+            :type="showUserListType"
+        >
+        </show-user-list-overlay>
+
+        <show-edit-profile-overlay
+            v-if="isShowEditProfileOverlay"
+            :user="currentUser"
+        >
+        </show-edit-profile-overlay>
     </div>
 </template>
 
@@ -40,6 +52,8 @@ import ShowPostOverlay from './components/ShowPostOverlay.vue';
 import ShowPostOptionsOverlay from './components/ShowPostOptionsOverlay.vue';
 import ShowEditPostOverlay from './components/ShowEditPostOverlay.vue';
 import ShowCommentOptionsOverlay from './components/ShowCommentOptionsOverlay.vue';
+import ShowUserListOverlay from './components/ShowUserListOverlay.vue';
+import ShowEditProfileOverlay from './components/ShowEditProfileOverlay.vue';
 
 export default {
     name: 'App',
@@ -48,6 +62,8 @@ export default {
         ShowPostOptionsOverlay,
         ShowEditPostOverlay,
         ShowCommentOptionsOverlay,
+        ShowUserListOverlay,
+        ShowEditProfileOverlay,
     },
     setup() {
         const router = useRouter();
@@ -57,6 +73,7 @@ export default {
         const currentComment = computed(
             () => store.state.comment.currentComment
         );
+        const currentUser = computed(() => store.state.user.currentUser);
         const isShowCurrentPostOverlay = computed(
             () => store.state.post.isShowCurrentPostOverlay
         );
@@ -68,6 +85,15 @@ export default {
         );
         const isShowCurrentCommentOptionsOverlay = computed(
             () => store.state.comment.isShowCurrentCommentOptionsOverlay
+        );
+        const isShowUserListOverlay = computed(
+            () => store.state.user.isShowUserListOverlay
+        );
+        const showUserListType = computed(
+            () => store.state.user.showUserListType
+        );
+        const isShowEditProfileOverlay = computed(
+            () => store.state.user.isShowEditProfileOverlay
         );
 
         const isLoggedIn = computed(() => store.state.auth.isLoggedIn);
@@ -85,10 +111,14 @@ export default {
             layout,
             currentPost,
             currentComment,
+            currentUser,
             isShowCurrentPostOverlay,
             isShowCurrentPostOptionsOverlay,
             isShowEditCurrentPostOverlay,
             isShowCurrentCommentOptionsOverlay,
+            isShowUserListOverlay,
+            showUserListType,
+            isShowEditProfileOverlay,
         };
     },
 };
