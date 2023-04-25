@@ -2,6 +2,7 @@ export default {
     state() {
         return {
             posts: [],
+            homePosts: [],
             savedPosts: [],
             currentPost: null,
             isShowCurrentPostOverlay: false,
@@ -13,6 +14,10 @@ export default {
     mutations: {
         setPosts(state, posts) {
             state.posts = posts;
+        },
+
+        setHomePosts(state, posts) {
+            state.homePosts = posts;
         },
 
         setSavedPosts(state, posts) {
@@ -44,6 +49,9 @@ export default {
             state.savedPosts = state.savedPosts.filter(
                 (item) => item._id !== postId
             );
+            state.homePosts = state.homePosts.filter(
+                (item) => item._id !== postId
+            );
             state.isShowCurrentPostOverlay = false;
             state.isShowCurrentPostOptionsOverlay = false;
             state.currentPost = null;
@@ -51,6 +59,14 @@ export default {
 
         likePost(state, post) {
             state.posts = state.posts.map((item) =>
+                item._id === post._id ? post : item
+            );
+
+            state.savedPosts = state.savedPosts.map((item) =>
+                item._id === post._id ? post : item
+            );
+
+            state.homePosts = state.homePosts.map((item) =>
                 item._id === post._id ? post : item
             );
 
@@ -79,6 +95,9 @@ export default {
             state.savedPosts = state.savedPosts.map((item) =>
                 item._id === post._id ? post : item
             );
+            state.homePosts = state.homePosts.map((item) =>
+                item._id === post._id ? post : item
+            );
             state.isShowEditCurrentPostOverlay = false;
         },
 
@@ -89,10 +108,36 @@ export default {
                     ? item
                     : { ...item, comments: payload.comments }
             );
+            state.savedPosts = state.savedPosts.map((item) =>
+                item._id !== payload.postId
+                    ? item
+                    : { ...item, comments: payload.comments }
+            );
+            state.homePosts = state.homePosts.map((item) =>
+                item._id !== payload.postId
+                    ? item
+                    : { ...item, comments: payload.comments }
+            );
         },
         // payload = {postId, comment}
         addCommentToPost(state, payload) {
             state.posts = state.posts.map((item) =>
+                item._id !== payload.postId
+                    ? item
+                    : {
+                          ...item,
+                          comments: [payload.comment, ...item.comments],
+                      }
+            );
+            state.savedPosts = state.savedPosts.map((item) =>
+                item._id !== payload.postId
+                    ? item
+                    : {
+                          ...item,
+                          comments: [payload.comment, ...item.comments],
+                      }
+            );
+            state.homePosts = state.homePosts.map((item) =>
                 item._id !== payload.postId
                     ? item
                     : {
@@ -113,11 +158,35 @@ export default {
                           ),
                       }
             );
+            state.savedPosts = state.savedPosts.map((item) =>
+                item._id !== payload.postId
+                    ? item
+                    : {
+                          ...item,
+                          comments: item.comments.filter(
+                              (i) => i._id !== payload.commentId
+                          ),
+                      }
+            );
+            state.homePosts = state.homePosts.map((item) =>
+                item._id !== payload.postId
+                    ? item
+                    : {
+                          ...item,
+                          comments: item.comments.filter(
+                              (i) => i._id !== payload.commentId
+                          ),
+                      }
+            );
         },
     },
 
     actions: {
         fetchHomePosts({ commit }, posts) {
+            commit('setHomePosts', posts);
+        },
+
+        fetchPostsByUser({ commit }, posts) {
             commit('setPosts', posts);
         },
 
@@ -127,6 +196,10 @@ export default {
 
         setCurrentPost({ commit }, post) {
             commit('setCurrentPost', post);
+        },
+
+        setPosts({ commit }, posts) {
+            commit('setPosts', posts);
         },
 
         removeCurrentPost({ commit }) {

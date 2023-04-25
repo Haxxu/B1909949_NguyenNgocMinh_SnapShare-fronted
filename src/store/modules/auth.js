@@ -22,6 +22,23 @@ export default {
         setUser(state, user) {
             state.user = user;
         },
+
+        auth_followUser(state, user) {
+            if (
+                !state.user.following.find((item) => item.user_id === user._id)
+            ) {
+                state.user.following = [
+                    { user_id: user._id, added_at: user.updatedAt },
+                    ...state.user.following,
+                ];
+            }
+        },
+
+        auth_unfollowUser(state, user) {
+            state.user.following = state.user.following.filter(
+                (item) => item.user_id !== user._id
+            );
+        },
     },
 
     actions: {
@@ -45,6 +62,14 @@ export default {
 
         fetchUser({ commit }, user) {
             commit('setUser', user);
+        },
+
+        followUser({ commit }, user) {
+            commit('auth_followUser', user);
+        },
+
+        unfollowUser({ commit }, user) {
+            commit('auth_unfollowUser', user);
         },
     },
 

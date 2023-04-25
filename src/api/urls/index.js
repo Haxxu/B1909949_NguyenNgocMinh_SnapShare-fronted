@@ -17,6 +17,8 @@ export const getPostsByTagsUrl = () => `${apiUrl}/posts`;
 
 export const deletePostByIdUrl = (postId) => `${apiUrl}/posts/${postId}`;
 
+export const getPostByUserIdUrl = (userId) => `${apiUrl}/users/${userId}/posts`;
+
 export const getSavedPostsUrl = () => `${apiUrl}/me/saved-posts`;
 
 export const handleLikePostUrl = () => `${apiUrl}/me/liked-posts`;
@@ -44,3 +46,8 @@ export const getFollowersByUserIdUrl = (userId) =>
 export const getUserByIdUrl = (userId) => `${apiUrl}/users/${userId}`;
 
 export const updateUserByIdUrl = (userId) => `${apiUrl}/users/${userId}`;
+
+export const followUserUrl = () => `${apiUrl}/me/following`;
+
+// SEARCH
+export const searchUrl = () => `${apiUrl}/search`;

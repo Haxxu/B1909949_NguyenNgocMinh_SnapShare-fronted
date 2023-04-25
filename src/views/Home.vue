@@ -7,7 +7,7 @@
 <script>
 import Post from '@/components/Post.vue';
 import { useStore } from 'vuex';
-import { computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount, onMounted, onUnmounted } from 'vue';
 import postService from '../services/postService';
 import authService from '../services/authService';
 
@@ -19,12 +19,16 @@ export default {
     setup() {
         const store = useStore();
 
-        const posts = computed(() => store.state.post.posts);
+        const posts = computed(() => store.state.post.homePosts);
 
-        onBeforeMount(async () => {
+        onMounted(async () => {
             await postService.fetchHomePosts(store);
             await postService.fetchSavedPosts(store);
             // await authService.fetchUser(store);
+        });
+
+        onUnmounted(() => {
+            store.dispatch('setPosts', []);
         });
 
         return {

@@ -10,6 +10,7 @@ import {
     handleSavePostUrl,
     deletePostByIdUrl,
 } from '@/api/urls';
+import { getPostByUserIdUrl } from '../api/urls';
 
 class PostService {
     async createPost(title, description, image) {
@@ -98,6 +99,21 @@ class PostService {
             const res = await axiosInstance.get(getSavedPostsUrl());
             if (res.status < 400) {
                 store.dispatch('fetchSavedPosts', res.data.data);
+            }
+        } catch (error) {
+            if (error.response && error.response.status >= 400) {
+                // toast.error(error.response.data.message);
+            } else {
+                console.log(error);
+            }
+        }
+    }
+
+    async fetchPostsByUserId(store, userId) {
+        try {
+            const res = await axiosInstance.get(getPostByUserIdUrl(userId));
+            if (res.status < 400) {
+                store.dispatch('fetchPostsByUser', res.data.data);
             }
         } catch (error) {
             if (error.response && error.response.status >= 400) {

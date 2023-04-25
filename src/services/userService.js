@@ -1,6 +1,7 @@
 import { toast } from 'vue3-toastify';
 import axiosInstance from '../api/axiosInstance';
 import {
+    followUserUrl,
     getFollowersByUserIdUrl,
     getFollowingByUserIdUrl,
     getUserByIdUrl,
@@ -78,6 +79,42 @@ class UserService {
                 console.log(error);
             }
             return false;
+        }
+    }
+
+    async followUser(store, user) {
+        try {
+            const res = await axiosInstance.put(followUserUrl(), {
+                user: user._id,
+            });
+            if (res.status < 400) {
+                store.dispatch('followUser', res.data.data);
+            }
+        } catch (error) {
+            if (error.response && error.response.status >= 400) {
+                toast.error(error.response.data.message);
+            } else {
+                console.log(error);
+            }
+        }
+    }
+
+    async unfollowUser(store, user) {
+        try {
+            const res = await axiosInstance.delete(followUserUrl(), {
+                data: {
+                    user: user._id,
+                },
+            });
+            if (res.status < 400) {
+                store.dispatch('unfollowUser', res.data.data);
+            }
+        } catch (error) {
+            if (error.response && error.response.status >= 400) {
+                toast.error(error.response.data.message);
+            } else {
+                console.log(error);
+            }
         }
     }
 }

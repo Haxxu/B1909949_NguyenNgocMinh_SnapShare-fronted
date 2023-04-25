@@ -49,6 +49,62 @@ export default {
                 description: user.description,
             };
         },
+
+        user_followUser(state, { user, rootState }) {
+            if (rootState.auth.user._id === state.currentUser._id) {
+                if (!state.following.find((item) => item._id === user._id)) {
+                    state.following = [user, ...state.following];
+                }
+
+                if (
+                    !state.currentUser.following.find(
+                        (item) => item._id === user._id
+                    )
+                ) {
+                    state.currentUser.following = [
+                        user,
+                        ...state.currentUser.following,
+                    ];
+                }
+            } else {
+                if (!state.followers.find((item) => item._id === user._id)) {
+                    state.followers = [user, ...state.followers];
+                }
+
+                if (
+                    !state.currentUser.followers.find(
+                        (item) => item._id === user._id
+                    )
+                ) {
+                    state.currentUser.followers = [
+                        user,
+                        ...state.currentUser.followers,
+                    ];
+                }
+            }
+        },
+
+        user_unfollowUser(state, { user, rootState }) {
+            if (rootState.auth.user._id === state.currentUser._id) {
+                state.following = state.following.filter(
+                    (item) => item._id !== user._id
+                );
+
+                state.currentUser.following =
+                    state.currentUser.following.filter(
+                        (item) => item._id !== user._id
+                    );
+            } else {
+                state.followers = state.followers.filter(
+                    (item) => item._id !== user._id
+                );
+
+                state.currentUser.followers =
+                    state.currentUser.followers.filter(
+                        (item) => item._id !== user._id
+                    );
+            }
+        },
     },
 
     actions: {
@@ -64,8 +120,8 @@ export default {
             commit('setCurrentUser', user);
         },
 
-        setShowUserListOverlay({ commit }) {
-            commit('setShowEditProfileOverlay');
+        setShowUserListOverlay({ commit }, type) {
+            commit('setShowUserListOverlay', type);
         },
 
         removeShowUserListOverlay({ commit }) {
@@ -82,6 +138,18 @@ export default {
 
         updateUser({ commit }, user) {
             commit('updateUser', user);
+        },
+
+        followUser({ commit, rootState }, user) {
+            commit('user_followUser', { user, rootState });
+        },
+
+        unfollowUser({ commit, rootState }, user) {
+            commit('user_unfollowUser', { user, rootState });
+        },
+
+        logout({ commit }) {
+            commit('setCurrentUser', null);
         },
     },
 };

@@ -162,6 +162,7 @@ export default {
         const closeOverlay = () => {
             store.dispatch('removeCurrentPost');
             store.dispatch('setShowCurrentPostOverlay', false);
+            store.dispatch('removeComments');
         };
 
         const openPostOptionsOverlay = () => {

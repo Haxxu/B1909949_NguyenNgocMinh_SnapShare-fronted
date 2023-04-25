@@ -6,7 +6,7 @@
                     :to="{
                         name: 'User',
                         params: {
-                            id: post.owner?._id,
+                            id: post?.owner?._id || '',
                         },
                     }"
                     class="flex items-center"
@@ -112,7 +112,7 @@ export default {
             const c = store.state.post.posts.find(
                 (item) => item._id === props.post._id
             );
-            return c.comments || [];
+            return c?.comments || [];
         });
         const isOpenPostOptionsOverlay = ref(false);
         const commentLength = computed(() => comments.value.length);

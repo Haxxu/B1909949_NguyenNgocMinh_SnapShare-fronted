@@ -39,6 +39,10 @@ export default {
         removeCurrentComment(state) {
             state.currentComment = null;
         },
+
+        removeComments(state) {
+            state.comments = [];
+        },
     },
 
     actions: {
@@ -68,6 +72,10 @@ export default {
 
         removeCurrentComment({ commit }) {
             commit('removeCurrentComment');
+        },
+
+        removeComments({ commit }) {
+            commit('removeComments');
         },
     },
 };

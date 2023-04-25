@@ -31,7 +31,7 @@ const router = createRouter({
             meta: {
                 requiresAuth: true,
                 layout: MainLayout,
-                showFooter: true,
+                // showFooter: true,
             },
         },
         {
