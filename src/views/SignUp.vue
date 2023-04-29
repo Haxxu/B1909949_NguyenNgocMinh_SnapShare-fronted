@@ -160,7 +160,7 @@ export default {
             isSubmiting.value = true;
             await authService.signup(store, form);
             isSubmiting.value = false;
-            router.push({ name: 'Home' });
+            router.push({ name: 'Login' });
         };
 
         const navigateToLogin = () => {

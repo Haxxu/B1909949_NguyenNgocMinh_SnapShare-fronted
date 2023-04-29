@@ -1,7 +1,7 @@
 <template>
     <div class="w-full p-2">
         <div
-            class="max-w-[1200px] min-w-[800px] flex justify-center pt-[30px] p-x-[20px]"
+            class="max-w-[1200px] min-w-[800px] flex flex-col items-center pt-[30px] p-x-[20px]"
         >
             <div class="flex items-start">
                 <img

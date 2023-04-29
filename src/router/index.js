@@ -60,7 +60,6 @@ const router = createRouter({
             name: 'Login',
             component: LoginView,
             meta: {
-                requiresQuest: true,
                 layout: DefaultLayout,
             },
         },
@@ -69,12 +68,11 @@ const router = createRouter({
             name: 'SignUp',
             component: SignUpView,
             meta: {
-                requiresQuest: true,
                 layout: DefaultLayout,
             },
         },
         {
-            path: '/active/:token',
+            path: '/active',
             component: ActiveAccount,
         },
         {

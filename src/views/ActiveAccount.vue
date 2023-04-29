@@ -17,7 +17,7 @@ export default {
         const route = useRoute();
         const router = useRouter();
 
-        const token = ref(route.params.token);
+        const token = ref(route.query.token);
 
         onMounted(() => {
             const callApi = async () => {

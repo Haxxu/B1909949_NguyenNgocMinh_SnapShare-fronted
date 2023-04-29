@@ -120,7 +120,7 @@ class AuthService {
                 },
             });
 
-            console.log(res);
+            // console.log(res);
             store.commit('setUser', res.data.data);
             if (res.status == 200) {
             }
