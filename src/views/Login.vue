@@ -7,7 +7,7 @@
                     type="text"
                     v-model="account"
                     filled
-                    label="Account"
+                    label="Account / Email"
                     clearable
                     lazy-rules
                     :rules="[

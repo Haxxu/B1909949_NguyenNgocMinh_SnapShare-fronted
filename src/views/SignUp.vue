@@ -26,7 +26,7 @@
                     type="text"
                     v-model="form.account"
                     filled
-                    label="Account"
+                    label="Account / Email"
                     clearable
                     :rules="[
                         (_) => {
